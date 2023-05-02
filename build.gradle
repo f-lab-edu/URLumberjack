@@ -33,3 +33,11 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+task copyPrivate(type: Copy) {
+	copy {
+		from './URLumberjack-private'
+		include "*.yml"
+		into 'src/main/resources'
+	}
+}
