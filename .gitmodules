@@ -1,0 +1,3 @@
+[submodule "URLumberjack-private"]
+	path = URLumberjack-private
+	url = git@github.com:f-lab-edu/URLumberjack-private.git
