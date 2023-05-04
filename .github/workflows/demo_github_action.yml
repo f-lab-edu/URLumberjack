@@ -51,9 +51,9 @@ jobs:
     - name : NCP login and docker image pull and run
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
+        host: ${{ secrets.NCP_HOST }}
+        username: ${{ secrets.NCP_USERNAME }}
+        password: ${{ secrets.NCP_PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
           sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p $ {{ secrets.DOCKER_PASSWARD }}
