@@ -33,17 +33,19 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+      
+    #현재 working dir 확인
+    - name: check working dir
+      run : ls -R
         
     # gradle setup & build
-    - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2
-          
-    #setup 결과 확인
-    - name: Check build output
-      run: ls -R /home/runner/work/URLumberjack
-    
-    - name: Run build with Gradle Wrapper
-      run: ./gradlew build
+    - name: grant execute permission for gradlew
+      run: |
+        gradle wrapper
+        chmod +x gradlew
+
+    - name: gradle build
+      run: ./gradlew clean build
     
     #build 결과 확인
     - name: Check build output
