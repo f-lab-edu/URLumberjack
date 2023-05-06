@@ -34,11 +34,15 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         
-    # 
+    # gradle setup & build
     - name: Setup and Execute Gradle build
       uses: gradle/gradle-build-action@v2
       with:
         args: build
+    
+    #build 결과 확인
+    - name: Check build output
+      run: ls -R build
     
     #빌드한 jar파일을 도커 이미지로 빌드하고 도커 허브에 푸시
     - name: web docker build and push
