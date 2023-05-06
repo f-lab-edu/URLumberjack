@@ -16,6 +16,7 @@ public class DemoController {
     @RequestMapping("/")
     public String index(){
         return "hello, world! my name is " + demoService.selectName()
-                + ".\n now is " + demoService.selectNow();
+                + ".<br> now is " + demoService.selectNow()
+                + ".<br> this is github action auto deploy test";
     }
 }

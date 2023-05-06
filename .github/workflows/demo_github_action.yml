@@ -27,16 +27,13 @@ jobs:
       with:
         submodules: recursive
         token: ${{ secrets.ACTION_TOKEN }}
+        
     #명시한 환경으로 setup
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
-      
-    #현재 working dir 확인
-    - name: check working dir
-      run : ls -R
         
     # gradle setup & build
     - name: grant execute permission for gradlew
@@ -46,10 +43,6 @@ jobs:
 
     - name: gradle build
       run: ./gradlew clean build
-    
-    #build 결과 확인
-    - name: Check build output
-      run: ls -R /home/runner/work/URLumberjack
     
     #빌드한 jar파일을 도커 이미지로 빌드하고 도커 허브에 푸시
     - name: web docker build and push
@@ -64,9 +57,13 @@ jobs:
         host: ${{ secrets.NCP_HOST }}
         username: ${{ secrets.NCP_USERNAME }}
         password: ${{ secrets.NCP_PASSWORD }}
-        port: ${{ secrets.PORT }}
+        port: ${{ secrets.NCP_PORT }}
         script: |
-          sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p $ {{ secrets.DOCKER_PASSWARD }}
-          sudo docker rm -f ${docker ps -p -a)
+          sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          sudo docker stop $(sudo docker ps -a -q)
+          sudo docker rm -f $(sudo docker ps -a -q)
           sudo docker pull ${{ secrets.DOCKER_REPO }}/urlumberjack
+          sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_REPO }}/urlumberjack
+          sudo docker image prune -f
+          ps -ef | grep java
           
