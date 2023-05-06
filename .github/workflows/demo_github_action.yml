@@ -37,6 +37,11 @@ jobs:
     # gradle setup & build
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
+          
+    #setup 결과 확인
+    - name: Check build output
+      run: ls -R /home/runner/work/URLumberjack/URLumberjack
+    
     - name: Run build with Gradle Wrapper
       run: ./gradlew build
     
