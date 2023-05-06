@@ -35,10 +35,10 @@ jobs:
         distribution: 'temurin'
         
     # gradle setup & build
-    - name: Setup and Execute Gradle build
+    - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
-      with:
-        tasks: build
+    - name: Run build with Gradle Wrapper
+      run: ./gradlew build
     
     #build 결과 확인
     - name: Check build output
