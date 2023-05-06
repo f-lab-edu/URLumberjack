@@ -38,7 +38,7 @@ jobs:
     - name: Setup and Execute Gradle build
       uses: gradle/gradle-build-action@v2
       with:
-        args: build
+        tasks: build
     
     #build 결과 확인
     - name: Check build output
