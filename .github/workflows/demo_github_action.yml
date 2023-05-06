@@ -33,14 +33,13 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-    #Gradle build 전, 실행권한을 부여한다
-    - name: Grant execute permisson for gradlew 
-      run: chmod +x gradlew
-    #Gradle build
-    - name: Build with Gradle
+        
+    # 
+    - name: Setup and Execute Gradle build
       uses: gradle/gradle-build-action@v2
       with:
-        arguments: build
+        args: build
+    
     #빌드한 jar파일을 도커 이미지로 빌드하고 도커 허브에 푸시
     - name: web docker build and push
       run: |
