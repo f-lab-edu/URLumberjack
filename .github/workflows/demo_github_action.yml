@@ -42,7 +42,7 @@ jobs:
     
     #build 결과 확인
     - name: Check build output
-      run: ls -R build
+      run: ls -R /home/runner/work/URLumberjack/URLumberjack
     
     #빌드한 jar파일을 도커 이미지로 빌드하고 도커 허브에 푸시
     - name: web docker build and push
