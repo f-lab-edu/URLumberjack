@@ -40,14 +40,14 @@ jobs:
           
     #setup 결과 확인
     - name: Check build output
-      run: ls -R /home/runner/work/URLumberjack/URLumberjack
+      run: ls -R /home/runner/work/URLumberjack
     
     - name: Run build with Gradle Wrapper
       run: ./gradlew build
     
     #build 결과 확인
     - name: Check build output
-      run: ls -R /home/runner/work/URLumberjack/URLumberjack
+      run: ls -R /home/runner/work/URLumberjack
     
     #빌드한 jar파일을 도커 이미지로 빌드하고 도커 허브에 푸시
     - name: web docker build and push
