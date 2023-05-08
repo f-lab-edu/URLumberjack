@@ -1,22 +1,23 @@
 package com.flab.urlumberjack.demo.service;
 
-import com.flab.urlumberjack.demo.mapper.DemoMapper;
 import org.springframework.stereotype.Service;
+
+import com.flab.urlumberjack.demo.mapper.DemoMapper;
 
 @Service
 public class DemoService {
 
-    DemoMapper demoMapper;
+	DemoMapper demoMapper;
 
-    public DemoService(DemoMapper demoMapper) {
-        this.demoMapper = demoMapper;
-    }
+	public DemoService(DemoMapper demoMapper) {
+		this.demoMapper = demoMapper;
+	}
 
-    public String selectNow(){
-        return demoMapper.selectNow();
-    }
+	public String selectNow() {
+		return demoMapper.selectNow();
+	}
 
-    public String selectName(){
-        return demoMapper.selectName();
-    }
+	public String selectName() {
+		return demoMapper.selectName();
+	}
 }
