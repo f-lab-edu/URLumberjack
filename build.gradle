@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.0-SNAPSHOT'
 	id 'io.spring.dependency-management' version '1.1.0'
+	id 'checkstyle'
 }
 
 group = 'com.flab.urlumberjack'
@@ -34,7 +35,23 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-task copyPrivate(type: Copy) {
+//[S : checkstyle]
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+checkstyle {
+	configFile = file("config/checkstyle/naver-checkstyle-rules.xml")
+	configProperties = ["suppressionFile": "config/checkstyle/naver-checkstyle-suppressions.xml"]
+}
+tasks.withType(Checkstyle).configureEach {
+	reports {
+		xml.required = true
+		html.required = true
+	}
+}
+//[E : checkstyle]
+
+//github submodule에서 yml 추출
+tasks.register('copyPrivate') {
 	copy {
 		from './URLumberjack-private'
 		include "*.yml"
