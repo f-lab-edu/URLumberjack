@@ -28,9 +28,7 @@ public class UserService {
 
 	public JoinResponse join(JoinRequest joinRequest) {
 
-		mapper.selectUser(joinRequest.getEmail()).ifPresent(it -> {
-			throw new DuplicatedEmailException(ErrorMessage.DUPLICATED_EMAIL);
-		});
+		isDuplicatedEmail(joinRequest.getEmail());
 
 		String encryptPassword = passwordEncoder.encode(joinRequest.getPw());
 		String encryptMdn = passwordEncoder.encode(joinRequest.getMdn());
@@ -47,6 +45,12 @@ public class UserService {
 			.email(joinRequest.getEmail())
 			.mdn(joinRequest.getMdn())
 			.build();
+	}
+
+	public void isDuplicatedEmail(String email) {
+		mapper.selectUser(email).ifPresent(it -> {
+			throw new DuplicatedEmailException(ErrorMessage.DUPLICATED_EMAIL);
+		});
 	}
 
 }

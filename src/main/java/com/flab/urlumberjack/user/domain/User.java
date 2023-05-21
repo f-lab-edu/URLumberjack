@@ -14,4 +14,12 @@ public class User {
 	private String type;
 	private Status status;
 
+	//UserServiceTest를 위한 User객체 생성 메소드
+	public static User of(String email, String pw, String mdn) {
+		User user = new User();
+		user.email = email;
+		user.pw = pw;
+		user.mdn = mdn;
+		return user;
+	}
 }
