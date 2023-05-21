@@ -1,9 +1,9 @@
 plugins {
-    id 'java'
-    id 'org.springframework.boot' version '3.1.0-SNAPSHOT'
-    id 'io.spring.dependency-management' version '1.1.0'
-    id 'checkstyle'
-    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+	id 'java'
+	id 'org.springframework.boot' version '3.1.0-SNAPSHOT'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id 'checkstyle'
+	id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
 group = 'com.flab.urlumberjack'
@@ -11,84 +11,81 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
 }
 
 repositories {
-    mavenCentral()
-    maven { url 'https://repo.spring.io/milestone' }
-    maven { url 'https://repo.spring.io/snapshot' }
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.1"
+	implementation 'mysql:mysql-connector-java:8.0.32'
 
-    implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.1"
-    implementation 'mysql:mysql-connector-java:8.0.32'
-
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+	useJUnitPlatform()
 }
 
 //[S : checkstyle]
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 checkstyle {
-    toolVersion = '10.3.3'
-    maxWarnings = 0
-    configFile = file("config/checkstyle/naver-checkstyle-rules.xml")
-    configProperties = ["suppressionFile": "{config/checkstyle/naver-checkstyle-suppressions.xml"]
+	toolVersion = '10.3.3'
+	maxWarnings = 0
+	configFile = file("config/checkstyle/naver-checkstyle-rules.xml")
+	configProperties = ["suppressionFile": "{config/checkstyle/naver-checkstyle-suppressions.xml"]
 }
 tasks.withType(Checkstyle).configureEach {
-    reports {
-        xml.required = true
-        html.required = true
-    }
+	reports {
+		xml.required = true
+		html.required = true
+	}
 }
 //[E : checkstyle]
 
 //[S : restdocs]
 asciidoctor.doFirst {
-    delete file('src/main/resources/static/docs')
+	delete file('src/main/resources/static/docs')
 }
 ext {
-    snippetsDir = file('build/generated-snippets')
+	snippetsDir = file('build/generated-snippets')
 }
 test {
-    useJUnitPlatform()
-    outputs.dir snippetsDir
+	useJUnitPlatform()
+	outputs.dir snippetsDir
 }
 asciidoctor {
-    inputs.dir snippetsDir
-    dependsOn test
+	inputs.dir snippetsDir
+	dependsOn test
 }
 bootJar {
-    dependsOn asciidoctor
-    copy {
-        from "${asciidoctor.outputDir}"
-        into 'BOOT-INF/classes/static/docs'
-    }
+	dependsOn asciidoctor
+	copy {
+		from "${asciidoctor.outputDir}"
+		into 'BOOT-INF/classes/static/docs'
+	}
 }
 //[E : restdocs]
 
 //github submodule에서 yml 추출
 tasks.register('copyPrivate') {
-    copy {
-        from './URLumberjack-private'
-        include "*.yml"
-        into 'src/main/resources'
-    }
+	copy {
+		from './URLumberjack-private'
+		include "*.yml"
+		into 'src/main/resources'
+	}
 
 }
