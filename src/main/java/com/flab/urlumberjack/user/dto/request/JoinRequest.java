@@ -32,10 +32,9 @@ public class JoinRequest {
 	}
 
 	@Builder
-	public JoinRequest(String email, String pw, String name, String type) {
+	public JoinRequest(String email, String pw, String mdn) {
 		this.email = email;
 		this.pw = pw;
-		this.mdn = name;
-		this.type = type;
+		this.mdn = mdn;
 	}
 }
