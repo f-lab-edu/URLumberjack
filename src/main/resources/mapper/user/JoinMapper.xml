@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.flab.urlumberjack.user.mapper.UserMapper">
+
+    <select id="selectUser" parameterType="String" resultType="com.flab.urlumberjack.user.domain.User">
+        SELECT *
+        FROM user
+        WHERE email = #{email}
+    </select>
+
+    <insert id="insertUser" parameterType="com.flab.urlumberjack.user.dto.request.JoinRequest">
+        INSERT INTO user(
+        email
+        , pw
+        , mdn
+        , status
+        , type
+        , join_dt
+        , update_dt)
+        VALUES ( #{email}
+        , #{pw}
+        , #{mdn}
+        , 'ACTIVE'
+        <choose>
+            <when test="type != null and !type.isEmpty()">
+                , #{type}
+            </when>
+            <otherwise>
+                , 'DEFAULT'
+            </otherwise>
+        </choose>
+        , NOW()
+        , NOW())
+    </insert>
+
+</mapper>
