@@ -8,22 +8,31 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.flab.urlumberjack.global.exception.ErrorMessage;
+import com.flab.urlumberjack.global.jwt.JwtProvider;
+import com.flab.urlumberjack.user.domain.Status;
+import com.flab.urlumberjack.user.domain.User;
 import com.flab.urlumberjack.user.dto.request.JoinRequest;
+import com.flab.urlumberjack.user.dto.request.LoginRequest;
 import com.flab.urlumberjack.user.dto.response.JoinResponse;
+import com.flab.urlumberjack.user.dto.response.LoginResponse;
 import com.flab.urlumberjack.user.exception.DuplicatedEmailException;
 import com.flab.urlumberjack.user.exception.FailedJoinException;
+import com.flab.urlumberjack.user.exception.InactivateUserException;
+import com.flab.urlumberjack.user.exception.NotExistedUserException;
+import com.flab.urlumberjack.user.exception.WrongPasswordException;
 import com.flab.urlumberjack.user.mapper.UserMapper;
 
 @Service
 public class UserService {
 
-	final UserMapper mapper;
+	private UserMapper mapper;
+	private final PasswordEncoder passwordEncoder;
+	private final JwtProvider jwtTokenProvider;
 
-	final PasswordEncoder passwordEncoder;
-
-	public UserService(UserMapper mapper, PasswordEncoder passwordEncoder) {
+	public UserService(UserMapper mapper, PasswordEncoder passwordEncoder, JwtProvider jwtTokenProvider) {
 		this.mapper = mapper;
 		this.passwordEncoder = passwordEncoder;
+		this.jwtTokenProvider = jwtTokenProvider;
 	}
 
 	public JoinResponse join(JoinRequest joinRequest) {
@@ -45,6 +54,25 @@ public class UserService {
 			.email(joinRequest.getEmail())
 			.mdn(joinRequest.getMdn())
 			.build();
+	}
+
+	public LoginResponse login(LoginRequest loginRequest) {
+		User user = mapper.selectUser(loginRequest.getEmail()).orElseThrow(() ->
+			new NotExistedUserException(ErrorMessage.NOT_EXISTED_USER));
+
+		if (!isMatchedPassword(loginRequest.getPw(), user.getPw())) {
+			throw new WrongPasswordException(ErrorMessage.WRONG_PASSWORD);
+		}
+
+		if (!Status.ACTIVE.equals(user.getStatus())) {
+			throw new InactivateUserException(ErrorMessage.INACTIVE_USER);
+		}
+
+		return new LoginResponse(jwtTokenProvider.generateToken(user.getEmail(), user.getRole()));
+	}
+
+	public boolean isMatchedPassword(String password, String existedPassword) {
+		return passwordEncoder.matches(password, existedPassword);
 	}
 
 	public void isDuplicatedEmail(String email) {

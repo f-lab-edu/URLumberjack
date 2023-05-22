@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flab.urlumberjack.user.dto.request.JoinRequest;
+import com.flab.urlumberjack.user.dto.request.LoginRequest;
 import com.flab.urlumberjack.user.dto.response.JoinResponse;
+import com.flab.urlumberjack.user.dto.response.LoginResponse;
 import com.flab.urlumberjack.user.service.UserService;
 
 import jakarta.validation.Valid;
@@ -25,6 +27,11 @@ public class UserController {
 	@PostMapping("/join")
 	public ResponseEntity<JoinResponse> join(@RequestBody @Valid JoinRequest dto) {
 		return ResponseEntity.ok(service.join(dto));
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest dto) {
+		return ResponseEntity.ok(service.login(dto));
 	}
 
 }

@@ -11,6 +11,8 @@ public enum ErrorMessage {
 	DUPLICATED_EMAIL(HttpStatus.CONFLICT, "이미 등록된 이메일 주소입니다."),
 	FAILED_JOIN(HttpStatus.INTERNAL_SERVER_ERROR, "회원가입에 실패했습니다."),
 	NOT_EXISTED_USER(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다."),
+	WRONG_PASSWORD(HttpStatus.CONFLICT, "올바르지 않은 비밀번호입니다."),
+	INACTIVE_USER(HttpStatus.FORBIDDEN, "휴면상태이거나 탈퇴된 계정입니다."),
 
 	//about JWR
 	NOT_EXISTED_TOKEN(HttpStatus.NOT_FOUND, "등록된 토큰 정보가 없습니다."),
