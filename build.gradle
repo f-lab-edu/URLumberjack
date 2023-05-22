@@ -34,6 +34,9 @@ dependencies {
     implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.1"
     implementation 'mysql:mysql-connector-java:8.0.32'
 
+    //jwt
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
     //test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'

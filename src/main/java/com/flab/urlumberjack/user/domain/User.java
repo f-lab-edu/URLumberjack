@@ -12,6 +12,7 @@ public class User {
 	private String pw;
 	private String mdn;
 	private String type;
+	private String role;
 	private Status status;
 
 	//UserServiceTest를 위한 User객체 생성 메소드
