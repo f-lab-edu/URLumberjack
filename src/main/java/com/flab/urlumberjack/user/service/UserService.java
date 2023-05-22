@@ -27,12 +27,12 @@ public class UserService {
 
 	private UserMapper mapper;
 	private final PasswordEncoder passwordEncoder;
-	private final JwtProvider jwtTokenProvider;
+	private final JwtProvider jwtProvider;
 
-	public UserService(UserMapper mapper, PasswordEncoder passwordEncoder, JwtProvider jwtTokenProvider) {
+	public UserService(UserMapper mapper, PasswordEncoder passwordEncoder, JwtProvider jwtProvider) {
 		this.mapper = mapper;
 		this.passwordEncoder = passwordEncoder;
-		this.jwtTokenProvider = jwtTokenProvider;
+		this.jwtProvider = jwtProvider;
 	}
 
 	public JoinResponse join(JoinRequest joinRequest) {
@@ -42,7 +42,7 @@ public class UserService {
 		String encryptPassword = passwordEncoder.encode(joinRequest.getPw());
 		String encryptMdn = passwordEncoder.encode(joinRequest.getMdn());
 		joinRequest.setPw(encryptPassword);
-		joinRequest.setPw(encryptMdn);
+		joinRequest.setMdn(encryptMdn);
 
 		Integer insertResult = mapper.insertUser(joinRequest);
 
@@ -68,7 +68,7 @@ public class UserService {
 			throw new InactivateUserException(ErrorMessage.INACTIVE_USER);
 		}
 
-		return new LoginResponse(jwtTokenProvider.generateToken(user.getEmail(), user.getRole()));
+		return new LoginResponse(jwtProvider.generateToken(user.getEmail(), user.getRole()));
 	}
 
 	public boolean isMatchedPassword(String password, String existedPassword) {

@@ -31,6 +31,10 @@ public class JoinRequest {
 		this.pw = encryptPassword;
 	}
 
+	public void setMdn(String encryptMdn) {
+		this.mdn = encryptMdn;
+	}
+
 	@Builder
 	public JoinRequest(String email, String pw, String mdn) {
 		this.email = email;
