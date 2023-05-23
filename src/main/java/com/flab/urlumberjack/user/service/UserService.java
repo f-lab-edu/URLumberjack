@@ -57,8 +57,7 @@ public class UserService {
 	}
 
 	public LoginResponse login(LoginRequest loginRequest) {
-		User user = mapper.selectUser(loginRequest.getEmail()).orElseThrow(() ->
-			new NotExistedUserException(ErrorMessage.NOT_EXISTED_USER));
+		User user = selectUserByEmail(loginRequest.getEmail());
 
 		if (!isMatchedPassword(loginRequest.getPw(), user.getPw())) {
 			throw new WrongPasswordException(ErrorMessage.WRONG_PASSWORD);
@@ -79,6 +78,12 @@ public class UserService {
 		mapper.selectUser(email).ifPresent(it -> {
 			throw new DuplicatedEmailException(ErrorMessage.DUPLICATED_EMAIL);
 		});
+	}
+
+	public User selectUserByEmail(String email) {
+		return mapper.selectUser(email).orElseThrow(() ->
+			new NotExistedUserException(ErrorMessage.NOT_EXISTED_USER)
+		);
 	}
 
 }

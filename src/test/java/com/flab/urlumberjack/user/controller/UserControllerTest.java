@@ -15,12 +15,15 @@ import org.mybatis.spring.boot.test.autoconfigure.AutoConfigureMybatis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flab.urlumberjack.user.dto.request.JoinRequest;
+import com.flab.urlumberjack.user.dto.request.LoginRequest;
+import com.flab.urlumberjack.user.service.UserService;
 
 @WebMvcTest(UserController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -30,9 +33,11 @@ class UserControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
-
 	@Autowired
 	private ObjectMapper objectMapper;
+
+	@MockBean
+	UserService service;
 
 	public static final String VALID_EMAIL = "testUser@naver.com";
 	public static final String VALID_PW = "1q2w3e4r!";
@@ -61,7 +66,11 @@ class UserControllerTest {
 	@ValueSource(strings = {" ", "abc123", "gamil.com", "123!naver.com"})
 	@DisplayName("email 필드가 null, empty, blank 상태이거나 email형식이 아니라면 회원가입이 실패한다.")
 	void when_emailFieldIsNullAndEmptyAndBlank_expect_joinToFail(String email) throws Exception {
-		JoinRequest joinRequest = new JoinRequest(email, VALID_PW, VALID_MDN);
+		JoinRequest joinRequest = JoinRequest.builder()
+			.email(email)
+			.pw(VALID_PW)
+			.mdn(VALID_MDN)
+			.build();
 
 		ResultActions response = mockMvc.perform(post("/api/v1/user/join")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -78,7 +87,11 @@ class UserControllerTest {
 		"abcdef123456", "abcdef!@#$%^", "12345!@#$%", "abcedfg1234567!@#$%^&"})
 	@DisplayName("pw 필드가 null, empty, blank 상태이거나 pw형식에 어긋난다면 회원가입이 실패한다.")
 	void when_pwFieldIsNullAndEmptyAndBlank_expect_joinToFail(String pw) throws Exception {
-		JoinRequest joinRequest = new JoinRequest(VALID_EMAIL, pw, VALID_MDN);
+		JoinRequest joinRequest = JoinRequest.builder()
+			.email(VALID_EMAIL)
+			.pw(pw)
+			.mdn(VALID_MDN)
+			.build();
 
 		ResultActions response = mockMvc.perform(post("/api/v1/user/join")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -94,7 +107,11 @@ class UserControllerTest {
 	@ValueSource(strings = {" ", "0314723858", "+821011112222", "821011112222"})
 	@DisplayName("mdn 필드가 null, empty, blank 상태이거나 mdn형식에 위배된다면 회원가입이 실패한다.")
 	void when_mdnFieldIsNullAndEmptyAndBlank_expect_joinToFail(String mdn) throws Exception {
-		JoinRequest joinRequest = new JoinRequest(VALID_EMAIL, VALID_MDN, mdn);
+		JoinRequest joinRequest = JoinRequest.builder()
+			.email(VALID_EMAIL)
+			.pw(VALID_PW)
+			.mdn(mdn)
+			.build();
 
 		ResultActions response = mockMvc.perform(post("/api/v1/user/join")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -104,4 +121,43 @@ class UserControllerTest {
 
 		response.andExpect(status().isBadRequest());
 	}
+
+	@ParameterizedTest
+	@NullAndEmptySource
+	@ValueSource(strings = {" "})
+	@DisplayName("로그인시, email 필드가 null, empty, blank라면 로그인에 실패한다.")
+	void when_emailFieldIsNullAndEmptyAndBlank_expect_FailToLogin(String email) throws Exception {
+		LoginRequest loginRequest = LoginRequest.builder()
+			.email(email)
+			.pw(VALID_PW)
+			.build();
+
+		ResultActions response = mockMvc.perform(post("/api/v1/user/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsBytes(loginRequest))
+			)
+			.andDo(print());
+
+		response.andExpect(status().isBadRequest());
+	}
+
+	@ParameterizedTest
+	@NullAndEmptySource
+	@ValueSource(strings = {" "})
+	@DisplayName("로그인시, pw 필드가 null, empty, blank라면 로그인에 실패한다.")
+	void when_pwFieldIsNullAndEmptyAndBlank_expect_FailToLogin(String pw) throws Exception {
+		LoginRequest loginRequest = LoginRequest.builder()
+			.email(VALID_EMAIL)
+			.pw(pw)
+			.build();
+
+		ResultActions response = mockMvc.perform(post("/api/v1/user/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsBytes(loginRequest))
+			)
+			.andDo(print());
+
+		response.andExpect(status().isBadRequest());
+	}
+
 }
