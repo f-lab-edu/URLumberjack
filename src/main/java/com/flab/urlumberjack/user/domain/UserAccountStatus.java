@@ -1,5 +1,5 @@
 package com.flab.urlumberjack.user.domain;
 
-public enum Status {
+public enum UserAccountStatus {
 	ACTIVE, INACTIVE, DELETE
 }

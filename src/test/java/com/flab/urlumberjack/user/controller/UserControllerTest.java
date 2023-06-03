@@ -32,6 +32,7 @@ import com.flab.urlumberjack.user.service.UserService;
 @AutoConfigureMockMvc(addFilters = false)
 @AutoConfigureMybatis
 @ExtendWith(MockitoExtension.class)
+@DisplayName("UserController 테스트")
 class UserControllerTest {
 
 	@Autowired
