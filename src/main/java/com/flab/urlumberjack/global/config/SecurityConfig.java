@@ -50,8 +50,13 @@ public class SecurityConfig {
 			)
 			.authorizeHttpRequests((authorizeHttpRequests) ->
 				authorizeHttpRequests
-					//현재 구체적인 기능 api들이 작성되지 않았으므로, 이후 비 로그인 사용자가 사용할 수 있는 api url을 지속적으로 추가해 주어야 함
-					.requestMatchers("/api/v1/user/join/**", "/api/v1/user/login/**", "/api/v1/main/**").permitAll()
+					//비회원으로 접근가능한 컨텐츠(회원가입, 로그인, 메인페이지 접근 및 단순 URL 단축/조회)
+					.requestMatchers(
+						"/api/v1/user/join/**",
+						"/api/v1/user/login/**",
+						"/api/v1/main/**",
+						"/api/v1/url/insert",
+						"/api/v1/url/select").permitAll()
 					.anyRequest().authenticated()
 			);
 		return http.build();

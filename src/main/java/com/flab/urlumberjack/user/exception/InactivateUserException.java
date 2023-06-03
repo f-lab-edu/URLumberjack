@@ -1,11 +1,15 @@
 package com.flab.urlumberjack.user.exception;
 
-import com.flab.urlumberjack.global.exception.ErrorMessage;
+import org.springframework.http.HttpStatus;
 
-public class InactivateUserException extends RuntimeException {
+import com.flab.urlumberjack.global.exception.CustomRuntimeException;
 
-	public InactivateUserException(ErrorMessage errorMessage) {
-		super(errorMessage.getMessage());
+public class InactivateUserException extends CustomRuntimeException {
+
+	public static String message = "휴면상태이거나 탈퇴된 계정입니다.";
+
+	public InactivateUserException() {
+		super(message, HttpStatus.FORBIDDEN);
 	}
 
 }

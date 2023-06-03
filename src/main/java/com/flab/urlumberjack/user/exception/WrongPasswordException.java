@@ -1,10 +1,14 @@
 package com.flab.urlumberjack.user.exception;
 
-import com.flab.urlumberjack.global.exception.ErrorMessage;
+import org.springframework.http.HttpStatus;
 
-public class WrongPasswordException extends RuntimeException {
+import com.flab.urlumberjack.global.exception.CustomRuntimeException;
 
-	public WrongPasswordException(ErrorMessage errorMessage) {
-		super(errorMessage.getMessage());
+public class WrongPasswordException extends CustomRuntimeException {
+
+	public static String message = "올바르지 않은 비밀번호입니다.";
+
+	public WrongPasswordException() {
+		super(message, HttpStatus.CONFLICT);
 	}
 }

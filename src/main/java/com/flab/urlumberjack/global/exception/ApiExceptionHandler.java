@@ -1,7 +1,5 @@
 package com.flab.urlumberjack.global.exception;
 
-import static com.flab.urlumberjack.global.exception.ErrorMessage.*;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,13 +32,13 @@ public class ApiExceptionHandler {
 	@ExceptionHandler(DuplicatedEmailException.class)
 	public ResponseEntity<ErrorResponse> handleDuplicatedEmailException(DuplicatedEmailException exception) {
 		log.error("DuplicatedEmailException : ", exception);
-		return ErrorResponse.toResponseEntity(DUPLICATED_EMAIL);
+		return ErrorResponse.toResponseEntity(exception);
 	}
 
 	@ExceptionHandler(FailedJoinException.class)
 	public ResponseEntity<ErrorResponse> handleFailedJoinException(FailedJoinException exception) {
 		log.error("FailedJoinException : ", exception);
-		return ErrorResponse.toResponseEntity(FAILED_JOIN);
+		return ErrorResponse.toResponseEntity(exception);
 	}
 
 }

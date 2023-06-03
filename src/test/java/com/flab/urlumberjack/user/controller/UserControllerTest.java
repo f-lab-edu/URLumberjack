@@ -12,6 +12,8 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mybatis.spring.boot.test.autoconfigure.AutoConfigureMybatis;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -19,6 +21,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.util.ObjectUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flab.urlumberjack.user.dto.request.JoinRequest;
@@ -43,6 +46,8 @@ class UserControllerTest {
 	public static final String VALID_PW = "1q2w3e4r!";
 	public static final String VALID_MDN = "01011112222";
 
+	private final Logger log = LoggerFactory.getLogger(UserControllerTest.class);
+
 	@Test
 	@DisplayName("조건에 맞는 모든 필드를 입력받으면 회원가입이 성공한다.")
 	void when_allFieldsAreEntered_expect_joinToSuccess() throws Exception {
@@ -66,6 +71,7 @@ class UserControllerTest {
 	@ValueSource(strings = {" ", "abc123", "gamil.com", "123!naver.com"})
 	@DisplayName("email 필드가 null, empty, blank 상태이거나 email형식이 아니라면 회원가입이 실패한다.")
 	void when_emailFieldIsNullAndEmptyAndBlank_expect_joinToFail(String email) throws Exception {
+		log.info("email: {}", email == null ? "null" : ObjectUtils.isEmpty(email) ? "empty" : email);
 		JoinRequest joinRequest = JoinRequest.builder()
 			.email(email)
 			.pw(VALID_PW)
@@ -87,6 +93,7 @@ class UserControllerTest {
 		"abcdef123456", "abcdef!@#$%^", "12345!@#$%", "abcedfg1234567!@#$%^&"})
 	@DisplayName("pw 필드가 null, empty, blank 상태이거나 pw형식에 어긋난다면 회원가입이 실패한다.")
 	void when_pwFieldIsNullAndEmptyAndBlank_expect_joinToFail(String pw) throws Exception {
+		log.info("email: {}", pw == null ? "null" : ObjectUtils.isEmpty(pw) ? "empty" : pw);
 		JoinRequest joinRequest = JoinRequest.builder()
 			.email(VALID_EMAIL)
 			.pw(pw)
@@ -107,6 +114,7 @@ class UserControllerTest {
 	@ValueSource(strings = {" ", "0314723858", "+821011112222", "821011112222"})
 	@DisplayName("mdn 필드가 null, empty, blank 상태이거나 mdn형식에 위배된다면 회원가입이 실패한다.")
 	void when_mdnFieldIsNullAndEmptyAndBlank_expect_joinToFail(String mdn) throws Exception {
+		log.info("email: {}", mdn == null ? "null" : ObjectUtils.isEmpty(mdn) ? "empty" : mdn);
 		JoinRequest joinRequest = JoinRequest.builder()
 			.email(VALID_EMAIL)
 			.pw(VALID_PW)
@@ -127,6 +135,7 @@ class UserControllerTest {
 	@ValueSource(strings = {" "})
 	@DisplayName("로그인시, email 필드가 null, empty, blank라면 로그인에 실패한다.")
 	void when_emailFieldIsNullAndEmptyAndBlank_expect_FailToLogin(String email) throws Exception {
+		log.info("email: {}", email == null ? "null" : ObjectUtils.isEmpty(email) ? "empty" : email);
 		LoginRequest loginRequest = LoginRequest.builder()
 			.email(email)
 			.pw(VALID_PW)
@@ -146,6 +155,7 @@ class UserControllerTest {
 	@ValueSource(strings = {" "})
 	@DisplayName("로그인시, pw 필드가 null, empty, blank라면 로그인에 실패한다.")
 	void when_pwFieldIsNullAndEmptyAndBlank_expect_FailToLogin(String pw) throws Exception {
+		log.info("email: {}", pw == null ? "null" : ObjectUtils.isEmpty(pw) ? "empty" : pw);
 		LoginRequest loginRequest = LoginRequest.builder()
 			.email(VALID_EMAIL)
 			.pw(pw)

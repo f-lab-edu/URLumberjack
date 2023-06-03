@@ -20,7 +20,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 	public void handle(HttpServletRequest request,
 		HttpServletResponse response,
 		AccessDeniedException accessDeniedException) throws IOException {
-		log.error("JWT - returns 403 forbidden. Message : {}", accessDeniedException.getMessage());
+		log.warn("JWT - returns 403 forbidden. Message : {}", accessDeniedException.getMessage());
 
 		response.setStatus(ErrorMessage.FORBIDDEN_TOKEN.getStatus().value());
 		response.setCharacterEncoding("UTF-8");

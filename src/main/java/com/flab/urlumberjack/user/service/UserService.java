@@ -7,7 +7,6 @@ import java.util.Objects;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.flab.urlumberjack.global.exception.ErrorMessage;
 import com.flab.urlumberjack.global.jwt.JwtProvider;
 import com.flab.urlumberjack.user.domain.Status;
 import com.flab.urlumberjack.user.domain.User;
@@ -47,7 +46,7 @@ public class UserService {
 		Integer insertResult = mapper.insertUser(joinRequest);
 
 		if (Objects.equals(insertResult, INSERT_FAIL)) {
-			throw new FailedJoinException(ErrorMessage.FAILED_JOIN);
+			throw new FailedJoinException();
 		}
 
 		return JoinResponse.builder()
@@ -60,11 +59,11 @@ public class UserService {
 		User user = selectUserByEmail(loginRequest.getEmail());
 
 		if (!isMatchedPassword(loginRequest.getPw(), user.getPw())) {
-			throw new WrongPasswordException(ErrorMessage.WRONG_PASSWORD);
+			throw new WrongPasswordException();
 		}
 
 		if (!Status.ACTIVE.equals(user.getStatus())) {
-			throw new InactivateUserException(ErrorMessage.INACTIVE_USER);
+			throw new InactivateUserException();
 		}
 
 		return new LoginResponse(jwtProvider.generateToken(user.getEmail(), user.getRole()));
@@ -76,13 +75,12 @@ public class UserService {
 
 	public void isDuplicatedEmail(String email) {
 		mapper.selectUser(email).ifPresent(it -> {
-			throw new DuplicatedEmailException(ErrorMessage.DUPLICATED_EMAIL);
+			throw new DuplicatedEmailException();
 		});
 	}
 
 	public User selectUserByEmail(String email) {
-		return mapper.selectUser(email).orElseThrow(() ->
-			new NotExistedUserException(ErrorMessage.NOT_EXISTED_USER)
+		return mapper.selectUser(email).orElseThrow(NotExistedUserException::new
 		);
 	}
 

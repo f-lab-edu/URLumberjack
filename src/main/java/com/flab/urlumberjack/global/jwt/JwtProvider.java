@@ -1,5 +1,7 @@
 package com.flab.urlumberjack.global.jwt;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Optional;
@@ -44,6 +46,7 @@ public class JwtProvider {
 	@PostConstruct
 	protected void init() {
 		secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+		log.debug("[salt] : {}", secretKey);
 	}
 
 	/**
@@ -57,13 +60,14 @@ public class JwtProvider {
 		Claims claims = Jwts.claims().setSubject(email);
 		claims.put(ROLE, role);
 
-		Date now = new Date();
-		Date validity = new Date(now.getTime() + exp);
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime validity = now.plusNanos(exp * 1_000_000);
+		Date expiration = Date.from(validity.atZone(ZoneId.systemDefault()).toInstant());
 
 		return Jwts.builder()
 			.setClaims(claims) //정보 저장
-			.setIssuedAt(now) //토큰 발행시간
-			.setExpiration(validity) //만료기한
+			.setIssuedAt(Date.from(now.atZone(ZoneId.systemDefault()).toInstant())) //토큰 발행시간
+			.setExpiration(expiration) //만료기한
 			.signWith(SignatureAlgorithm.HS256, secretKey) //암호화 알고리즘, secret값 세팅
 			.compact();
 	}

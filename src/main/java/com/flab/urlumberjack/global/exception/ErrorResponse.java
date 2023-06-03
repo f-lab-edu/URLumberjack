@@ -11,12 +11,12 @@ public class ErrorResponse {
 	private final String status;
 	private final String message;
 
-	public static ResponseEntity<ErrorResponse> toResponseEntity(ErrorMessage errorMessage) {
+	public static ResponseEntity<ErrorResponse> toResponseEntity(CustomRuntimeException e) {
 		return ResponseEntity
-			.status(errorMessage.getStatus().value())
+			.status(e.getStatus().value())
 			.body(ErrorResponse.builder()
-				.status(errorMessage.getStatus().toString())
-				.message(errorMessage.getMessage())
+				.status(e.getStatus().toString())
+				.message(e.getMessage())
 				.build()
 			);
 	}

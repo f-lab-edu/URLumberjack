@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.flab.urlumberjack.global.exception.ErrorMessage;
 import com.flab.urlumberjack.user.domain.User;
 import com.flab.urlumberjack.user.exception.NotExistedUserException;
 import com.flab.urlumberjack.user.mapper.UserMapper;
@@ -22,8 +21,7 @@ public class UserDetailService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-		User user = mapper.selectUser(email).orElseThrow(() ->
-			new NotExistedUserException(ErrorMessage.NOT_EXISTED_USER));
+		User user = mapper.selectUser(email).orElseThrow(NotExistedUserException::new);
 
 		return new UserDetail(user);
 	}
