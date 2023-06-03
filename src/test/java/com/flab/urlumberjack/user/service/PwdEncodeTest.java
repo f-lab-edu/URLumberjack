@@ -1,11 +1,13 @@
 package com.flab.urlumberjack.user.service;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootTest
+@DisplayName("비밀번호 암호화 테스트")
 public class PwdEncodeTest {
 	@Autowired
 	PasswordEncoder passwordEncoder; // DI
