@@ -12,6 +12,7 @@ import com.flab.urlumberjack.user.dto.response.JoinResponse;
 import com.flab.urlumberjack.user.dto.response.LoginResponse;
 import com.flab.urlumberjack.user.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -30,8 +31,9 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest dto) {
-		return ResponseEntity.ok(service.login(dto));
+	public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest dto, HttpServletRequest request) {
+		String ip = request.getRemoteAddr();
+		return ResponseEntity.ok(service.login(dto, ip));
 	}
 
 }

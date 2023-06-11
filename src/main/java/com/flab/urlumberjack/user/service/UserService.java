@@ -55,7 +55,7 @@ public class UserService {
 			.build();
 	}
 
-	public LoginResponse login(LoginRequest loginRequest) {
+	public LoginResponse login(LoginRequest loginRequest, String ip) {
 		User user = selectUserByEmail(loginRequest.getEmail());
 
 		if (!isMatchedPassword(loginRequest.getPw(), user.getPw())) {
