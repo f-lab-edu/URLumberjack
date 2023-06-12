@@ -1,4 +1,4 @@
-package com.flab.urlumberjack.global.jwt;
+package com.flab.urlumberjack.global.jwt.domain;
 
 import java.util.Collection;
 
