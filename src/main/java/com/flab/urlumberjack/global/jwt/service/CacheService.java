@@ -1,36 +1,40 @@
 package com.flab.urlumberjack.global.jwt.service;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 import com.flab.urlumberjack.global.jwt.domain.RefreshToken;
 
-@Service
+@Component
 public class CacheService {
 
-	private static final Map<String, RefreshToken> REFRESH_CACHE_POOL = new ConcurrentHashMap<>();
+	private final Cache<String, RefreshToken> cache;
 
 	private static final int expirationDate = 14;
 
-	@Cacheable(value = "refreshTokenCache", key = "#email")
-	public void saveRefreshToken(String email, String ip, String refreshToken) {
-		REFRESH_CACHE_POOL.put(email,
-			RefreshToken.of(email, ip, refreshToken, LocalDateTime.now().plusDays(expirationDate)));
+	public CacheService() {
+		this.cache = Caffeine.newBuilder()
+				.expireAfterWrite(expirationDate, TimeUnit.DAYS)
+				.build();
 	}
 
-	@Cacheable(value = "refreshTokenCache", key = "#email")
-	public RefreshToken getRefreshToken(String email) {
-		return REFRESH_CACHE_POOL.get(email);
+	public void saveToken(String email, String ip, String refreshToken) {
+		cache.put(email, RefreshToken.of(email, ip, refreshToken, LocalDateTime.now().plusDays(expirationDate)));
 	}
 
-	@CacheEvict(value = "refreshTokenCache", key = "#email")
-	public void removeToken(String email) {
-		REFRESH_CACHE_POOL.remove(email);
-	}ㅂ
+	public void deleteToken(String email) {
+		cache.invalidate(email);
+	}
 
+	public Optional<RefreshToken> hasToken(String email, String ip) {
+		RefreshToken refreshToken = cache.getIfPresent(email);
+		return Optional.ofNullable(refreshToken)
+				.filter(token -> token.getIp().equals(ip));
+	}
 }

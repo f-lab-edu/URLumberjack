@@ -1,5 +1,6 @@
 package com.flab.urlumberjack.user.controller;
 
+import com.flab.urlumberjack.user.dto.request.ReIssueRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +35,12 @@ public class UserController {
 	public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest dto, HttpServletRequest request) {
 		String ip = request.getRemoteAddr();
 		return ResponseEntity.ok(service.login(dto, ip));
+	}
+
+	@PostMapping("/reissue")
+	public ResponseEntity<LoginResponse> reissue(@RequestBody @Valid ReIssueRequest dto, HttpServletRequest request) {
+		String ip = request.getRemoteAddr();
+		return ResponseEntity.ok(service.reissue(dto, ip));
 	}
 
 }

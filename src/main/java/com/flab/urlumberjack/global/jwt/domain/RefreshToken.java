@@ -1,7 +1,13 @@
 package com.flab.urlumberjack.global.jwt.domain;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public class RefreshToken {
 
 	private String email;
