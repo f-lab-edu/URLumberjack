@@ -28,6 +28,7 @@ class UserServiceMockTest {
 	UserService mockService;
 
 	@Test
+	@DisplayName("가입시 입력한 email이 이미 등록되었다면 DuplicatedEmailException이 발생한다.")
 	void when_emailIsDuplicated_expect_throwsDuplicatedEmailException() {
 		// 가상의 User 객체 생성
 		User user = User.of("test@naver.com", "1q2w3e4r!", "01011112222");

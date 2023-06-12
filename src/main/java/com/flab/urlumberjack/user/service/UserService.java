@@ -5,12 +5,21 @@ import org.springframework.stereotype.Service;
 
 import com.flab.urlumberjack.global.Utils.QueryUtil;
 import com.flab.urlumberjack.global.jwt.JwtProvider;
+import com.flab.urlumberjack.global.jwt.service.CacheService;
+import com.flab.urlumberjack.user.domain.Role;
 import com.flab.urlumberjack.user.domain.User;
 import com.flab.urlumberjack.user.domain.UserAccountStatus;
 import com.flab.urlumberjack.user.dto.request.JoinRequest;
 import com.flab.urlumberjack.user.dto.request.LoginRequest;
+import com.flab.urlumberjack.user.dto.request.ReIssueRequest;
 import com.flab.urlumberjack.user.dto.response.JoinResponse;
 import com.flab.urlumberjack.user.dto.response.LoginResponse;
+import com.flab.urlumberjack.user.exception.DuplicatedEmailException;
+import com.flab.urlumberjack.user.exception.FailedJoinException;
+import com.flab.urlumberjack.user.exception.InactivateUserException;
+import com.flab.urlumberjack.user.exception.InvalidRefreshTokenException;
+import com.flab.urlumberjack.user.exception.NotExistedUserException;
+import com.flab.urlumberjack.user.exception.WrongPasswordException;
 import com.flab.urlumberjack.user.mapper.UserMapper;
 
 @Service
@@ -21,7 +30,8 @@ public class UserService {
 	private final JwtProvider jwtProvider;
 	private final CacheService cacheService;
 
-	public UserService(UserMapper mapper, PasswordEncoder passwordEncoder, JwtProvider jwtProvider, CacheService cacheService) {
+	public UserService(UserMapper mapper, PasswordEncoder passwordEncoder, JwtProvider jwtProvider,
+		CacheService cacheService) {
 		this.mapper = mapper;
 		this.passwordEncoder = passwordEncoder;
 		this.jwtProvider = jwtProvider;
@@ -91,8 +101,7 @@ public class UserService {
 	}
 
 	public User selectUserByEmail(String email) {
-		return mapper.selectUser(email).orElseThrow(NotExistedUserException::new
-		);
+		return mapper.selectUser(email).orElseThrow(NotExistedUserException::new);
 	}
 
 	public void validateRefreshToken(String email, String ip) {

@@ -1,5 +1,6 @@
 package com.flab.urlumberjack.global.Utils;
 
+import java.util.List;
 import java.util.Objects;
 
 public class QueryUtil {
