@@ -10,11 +10,11 @@ import com.flab.urlumberjack.user.exception.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.flab.urlumberjack.global.Utils.QueryUtil;
 import com.flab.urlumberjack.global.jwt.JwtProvider;
 import com.flab.urlumberjack.global.jwt.service.CacheService;
-import com.flab.urlumberjack.user.domain.Status;
 import com.flab.urlumberjack.user.domain.User;
-import com.flab.urlumberjack.user.dto.request.JoinRequest;
+import com.flab.urlumberjack.user.domain.UserAccountStatus;
 import com.flab.urlumberjack.user.dto.request.LoginRequest;
 import com.flab.urlumberjack.user.dto.response.JoinResponse;
 import com.flab.urlumberjack.user.dto.response.LoginResponse;
@@ -37,16 +37,14 @@ public class UserService {
 
 	public JoinResponse join(JoinRequest joinRequest) {
 
-		isDuplicatedEmail(joinRequest.getEmail());
+		checkDuplicatedEmail(joinRequest.getEmail());
 
 		String encryptPassword = passwordEncoder.encode(joinRequest.getPw());
 		String encryptMdn = passwordEncoder.encode(joinRequest.getMdn());
 		joinRequest.setPw(encryptPassword);
 		joinRequest.setMdn(encryptMdn);
 
-		Integer insertResult = mapper.insertUser(joinRequest);
-
-		if (Objects.equals(insertResult, INSERT_FAIL)) {
+		if (QueryUtil.excuteInsertQuery(mapper.insertUser(joinRequest))) {
 			throw new FailedJoinException();
 		}
 
@@ -59,11 +57,11 @@ public class UserService {
 	public LoginResponse login(LoginRequest loginRequest, String ip) {
 		User user = selectUserByEmail(loginRequest.getEmail());
 
-		if (!isMatchedPassword(loginRequest.getPw(), user.getPw())) {
+		if (!isMatchedPassword(loginRequest.getPw(), user.getPassword())) {
 			throw new WrongPasswordException();
 		}
 
-		if (!Status.ACTIVE.equals(user.getStatus())) {
+		if (!UserAccountStatus.ACTIVE.equals(user.getStatus())) {
 			throw new InactivateUserException();
 		}
 
@@ -93,7 +91,7 @@ public class UserService {
 		return passwordEncoder.matches(password, existedPassword);
 	}
 
-	public void isDuplicatedEmail(String email) {
+	public void checkDuplicatedEmail(String email) {
 		mapper.selectUser(email).ifPresent(it -> {
 			throw new DuplicatedEmailException();
 		});

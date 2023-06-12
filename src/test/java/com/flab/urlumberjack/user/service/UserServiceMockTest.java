@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.flab.urlumberjack.user.domain.User;
 import com.flab.urlumberjack.user.dto.request.JoinRequest;
@@ -20,7 +19,7 @@ import com.flab.urlumberjack.user.exception.NotExistedUserException;
 import com.flab.urlumberjack.user.mapper.UserMapper;
 
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest
+@DisplayName("UserService Mock 테스트")
 class UserServiceMockTest {
 	@Mock
 	UserMapper mapper;
