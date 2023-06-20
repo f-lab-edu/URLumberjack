@@ -5,17 +5,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.flab.urlumberjack.global.jwt.domain.UserDetail;
+import com.flab.urlumberjack.global.jwt.domain.JwtUser;
 import com.flab.urlumberjack.user.domain.User;
 import com.flab.urlumberjack.user.exception.NotExistedUserException;
 import com.flab.urlumberjack.user.mapper.UserMapper;
 
 @Service
-public class UserDetailService implements UserDetailsService {
+public class JwtAuthService implements UserDetailsService {
 
 	UserMapper mapper;
 
-	public UserDetailService(UserMapper mapper) {
+	public JwtAuthService(UserMapper mapper) {
 		this.mapper = mapper;
 	}
 
@@ -24,6 +24,6 @@ public class UserDetailService implements UserDetailsService {
 
 		User user = mapper.selectUser(email).orElseThrow(NotExistedUserException::new);
 
-		return new UserDetail(user);
+		return new JwtUser(user);
 	}
 }

@@ -25,7 +25,7 @@ import com.flab.urlumberjack.user.mapper.UserMapper;
 @Service
 public class UserService {
 
-	private UserMapper mapper;
+	private final UserMapper mapper;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtProvider jwtProvider;
 	private final CacheService cacheService;

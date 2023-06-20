@@ -7,11 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.flab.urlumberjack.user.domain.User;
 
-public class UserDetail implements UserDetails {
+public class JwtUser implements UserDetails {
 
 	private User user;
 
-	public UserDetail(User user) {
+	public JwtUser(User user) {
 		this.user = user;
 	}
 

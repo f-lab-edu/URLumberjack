@@ -3,15 +3,21 @@ package com.flab.urlumberjack.global.exception;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.flab.urlumberjack.lumberjack.exception.DuplicatedCustomUrlException;
-import com.flab.urlumberjack.lumberjack.exception.NonMemberLumberjackLimitExceededException;
-import com.flab.urlumberjack.lumberjack.exception.RecursiveCallExceedException;
-import com.flab.urlumberjack.user.exception.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import com.flab.urlumberjack.lumberjack.exception.DuplicatedCustomUrlException;
+import com.flab.urlumberjack.lumberjack.exception.NonMemberLumberjackLimitExceededException;
+import com.flab.urlumberjack.lumberjack.exception.TooManyRepeatLumberjack;
+import com.flab.urlumberjack.user.exception.DuplicatedEmailException;
+import com.flab.urlumberjack.user.exception.FailedJoinException;
+import com.flab.urlumberjack.user.exception.InactivateUserException;
+import com.flab.urlumberjack.user.exception.InvalidRefreshTokenException;
+import com.flab.urlumberjack.user.exception.NotExistedUserException;
+import com.flab.urlumberjack.user.exception.WrongPasswordException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -70,14 +76,15 @@ public class ApiExceptionHandler {
 
 	// S : Lumberjack /////////////////////////////
 	@ExceptionHandler(NonMemberLumberjackLimitExceededException.class)
-	public ResponseEntity<ErrorResponse> nonMemberLumberjackLimitExceededException(NonMemberLumberjackLimitExceededException exception) {
+	public ResponseEntity<ErrorResponse> nonMemberLumberjackLimitExceededException(
+		NonMemberLumberjackLimitExceededException exception) {
 		log.warn("FailedJoinException : ", exception);
 		return ErrorResponse.toResponseEntity(exception);
 	}
 
-	@ExceptionHandler(RecursiveCallExceedException.class)
-	public ResponseEntity<ErrorResponse> recursiveCallExceedException(RecursiveCallExceedException exception) {
-		log.warn("FailedJoinException : ", exception);
+	@ExceptionHandler(TooManyRepeatLumberjack.class)
+	public ResponseEntity<ErrorResponse> tooManyRepeatLumberjack(TooManyRepeatLumberjack exception) {
+		log.warn("TooManyRepeatLumberjack : ", exception);
 		return ErrorResponse.toResponseEntity(exception);
 	}
 
