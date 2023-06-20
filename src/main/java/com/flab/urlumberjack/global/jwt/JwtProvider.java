@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -73,6 +74,14 @@ public class JwtProvider {
 	}
 
 	/**
+	 * Refresh token값 생성(UUID)
+	 * @return String : UUID
+	 */
+	public String generateRefreshToken() {
+		return UUID.randomUUID().toString();
+	}
+
+	/**
 	 * JWT에서 Authentication 객체 생성
 	 * @param token JWT
 	 * @return Authentication(token value)
@@ -97,8 +106,20 @@ public class JwtProvider {
 
 	/**
 	 * JWT에서 role 정보 추출
-	 * @param request HttpServletRequest
+	 * @param token HttpServletRequest
 	 * @return role(ADMIN, USER)
+	 */
+	public String getUserRole(String token) {
+		return (String)Jwts.parser()
+				.setSigningKey(secretKey)
+				.parseClaimsJws(token)
+				.getBody().get(ROLE);
+	}
+
+	/**
+	 * Request Header에서 token값 추출
+	 * @param request : HttpServletRequest
+	 * @return token값
 	 */
 	public Optional<String> resolveToken(HttpServletRequest request) {
 		return Optional.ofNullable(request.getHeader(AUTHORIZATION_HEADER));

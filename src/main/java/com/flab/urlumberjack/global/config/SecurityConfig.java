@@ -57,8 +57,8 @@ public class SecurityConfig {
 						"/api/v1/main/**",
 						"/api/v1/url/insert",
 						"/api/v1/url/select").permitAll()
-					.anyRequest().authenticated()
-			);
+					.anyRequest().authenticated())
+				.addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 

@@ -1,10 +1,11 @@
-package com.flab.urlumberjack.global.jwt;
+package com.flab.urlumberjack.global.jwt.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.flab.urlumberjack.global.jwt.domain.UserDetail;
 import com.flab.urlumberjack.user.domain.User;
 import com.flab.urlumberjack.user.exception.NotExistedUserException;
 import com.flab.urlumberjack.user.mapper.UserMapper;
