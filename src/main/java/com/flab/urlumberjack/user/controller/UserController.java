@@ -26,7 +26,7 @@ public class UserController {
 		this.service = service;
 	}
 
-	@PostMapping("/join")
+	@PostMapping
 	public ResponseEntity<JoinResponse> join(@RequestBody @Valid JoinRequest dto) {
 		return ResponseEntity.ok(service.join(dto));
 	}

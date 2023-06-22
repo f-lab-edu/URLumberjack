@@ -1,20 +1,19 @@
 package com.flab.urlumberjack.user.service;
 
-import com.flab.urlumberjack.global.jwt.JwtProvider;
-import com.flab.urlumberjack.global.jwt.service.CacheService;
-import com.flab.urlumberjack.user.exception.InvalidRefreshTokenException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@ExtendWith(MockitoExtension.class)
+import com.flab.urlumberjack.global.jwt.JwtProvider;
+import com.flab.urlumberjack.global.jwt.service.CacheService;
+import com.flab.urlumberjack.user.exception.InvalidRefreshTokenException;
+
 @SpringBootTest
+@DisplayName("UserService 테스트")
 class UserServiceTest {
 
 	@Autowired
@@ -39,7 +38,7 @@ class UserServiceTest {
 			String encodedPassword = passwordEncoder.encode(password);
 
 			Assertions.assertTrue(
-					service.isMatchedPassword(password, encodedPassword)
+				service.isMatchedPassword(password, encodedPassword)
 			);
 		}
 
@@ -51,7 +50,7 @@ class UserServiceTest {
 			String encodedPassword = passwordEncoder.encode(savedPassword);
 
 			Assertions.assertFalse(
-					service.isMatchedPassword(inputPassword, encodedPassword)
+				service.isMatchedPassword(inputPassword, encodedPassword)
 			);
 		}
 	}
@@ -88,6 +87,5 @@ class UserServiceTest {
 			});
 		}
 	}
-
 
 }

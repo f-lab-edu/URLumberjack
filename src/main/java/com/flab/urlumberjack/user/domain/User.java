@@ -9,17 +9,17 @@ import lombok.NoArgsConstructor;
 public class User {
 	private Long tid;
 	private String email;
-	private String pw;
+	private String password;
 	private String mdn;
-	private String type;
+	private UserJoinType type;
 	private Role role;
-	private Status status;
+	private UserAccountStatus status;
 
 	//UserServiceTest를 위한 User객체 생성 메소드
-	public static User of(String email, String pw, String mdn) {
+	public static User of(String email, String password, String mdn) {
 		User user = new User();
 		user.email = email;
-		user.pw = pw;
+		user.password = password;
 		user.mdn = mdn;
 		return user;
 	}

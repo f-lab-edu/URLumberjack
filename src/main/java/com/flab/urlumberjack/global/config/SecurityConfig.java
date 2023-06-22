@@ -55,12 +55,14 @@ public class SecurityConfig {
 						"/api/v1/user/join/**",
 						"/api/v1/user/login/**",
 						"/api/v1/main/**",
-						"/api/v1/url/insert",
-						"/api/v1/url/select").permitAll()
-					.anyRequest().authenticated())
-				.addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
+						"/api/v1/lumberjack",
+						"/api/v1/lumberjack/select").permitAll()
+					.anyRequest().permitAll())
+			.addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
+
+
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {

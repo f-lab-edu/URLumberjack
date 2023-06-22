@@ -1,5 +1,5 @@
 package com.flab.urlumberjack.user.domain;
 
-public enum Type {
+public enum UserJoinType {
 	DEFAULT, GOOGLE, NAVER, KAKAO
 }

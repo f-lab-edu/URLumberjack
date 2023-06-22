@@ -25,7 +25,8 @@ public class JoinRequest {
 		message = "올바른 전화번호를 입력해 주세요.")
 	String mdn;
 
-	String type;
+	//기본값은 DEFAULT 입니다. (직접 회원가입)
+	String type = "DEFAULT";
 
 	public void setPw(String encryptPassword) {
 		this.pw = encryptPassword;

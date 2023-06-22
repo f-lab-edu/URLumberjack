@@ -6,34 +6,31 @@
 <mapper namespace="com.flab.urlumberjack.user.mapper.UserMapper">
 
     <select id="selectUser" parameterType="String" resultType="com.flab.urlumberjack.user.domain.User">
-        SELECT *
+        SELECT tid
+             , email
+             , type
+             , status
+             , type
+             , role
         FROM user
         WHERE email = #{email}
     </select>
 
     <insert id="insertUser" parameterType="com.flab.urlumberjack.user.dto.request.JoinRequest">
-        INSERT INTO user(
-        email
-        , pw
-        , mdn
-        , status
-        , type
-        , join_dt
-        , update_dt)
-        VALUES ( #{email}
-        , #{pw}
-        , #{mdn}
-        , 'ACTIVE'
-        <choose>
-            <when test="type != null and !type.isEmpty()">
-                , #{type}
-            </when>
-            <otherwise>
-                , 'DEFAULT'
-            </otherwise>
-        </choose>
-        , NOW()
-        , NOW())
+        INSERT INTO user( email
+                        , pw
+                        , mdn
+                        , status
+                        , type
+                        , join_dt
+                        , update_dt)
+        VALUES (, #{email}
+               ,  #{pw}
+               ,  #{mdn}
+               ,  'ACTIVE'
+               ,  #{type}
+               ,  NOW()
+               ,  NOW())
     </insert>
 
 </mapper>
