@@ -108,7 +108,7 @@ public class LumberjackService {
 	 * 해당 결과가 DB에 등록되었는지 확인하며, 등록될경우 10회 반복하고 10회 이상 반복시 TooManyRepeatLumberjack를 반환한다.
 	 * @return String : 7자리로 구성된 short URL
 	 */
-	String generateShortUrl() {
+	public String generateShortUrl() {
 		String uuid = UUID.randomUUID().toString();
 		String hashedUuid = hashWithSha256(uuid);
 		String shortUrl = encodeWithBase62(hashedUuid.substring(0, 5));
