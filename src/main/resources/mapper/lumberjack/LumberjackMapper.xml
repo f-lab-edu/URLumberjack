@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.flab.urlumberjack.lumberjack.mapper.LumberjackMapper">
+
+    <select id="selectUrlInfo" parameterType="com.flab.urlumberjack.lumberjack.domain.UrlInfo" resultType="com.flab.urlumberjack.lumberjack.domain.UrlInfo">
+        SELECT id
+            , origin_url
+            , short_url
+            , qr_code
+            , use_yn
+            , expired_dt
+            , custom_url_id
+            , create_by
+            , create_dt
+            , update_dt
+        FROM url_info
+        WHERE USE_YN = #{useYn}
+            <if test="id != null and !id.isEmpty()">
+                AND id = #{id}
+            </if>
+            <if test="shortUrl != null and !shortUrl.isEmpty()">
+                AND short_url = #{shortUrl}
+            </if>
+    </select>
+
+    <insert id="lumberjackUrl" parameterType="com.flab.urlumberjack.lumberjack.domain.UrlInfo">
+        INSERT INTO url_info( origin_url
+                            , short_url
+                            , qr_code
+                            , use_yn
+                            , expired_dt
+                            , custom_url_id
+                            , create_by
+                            , create_dt)
+        VALUES ( #{originUrl}
+               , #{shortUrl}
+               , #{qrCode}
+               , #{useYn}
+               , DATE_ADD(NOW(), INTERVAL 12 MONTH)
+               , #{customUrlId}
+               , #{createBy}
+               , NOW())
+    </insert>
+
+    <select id="getLumberjackUrlList" parameterType="com.flab.urlumberjack.lumberjack.domain.UrlInfo" resultType="com.flab.urlumberjack.lumberjack.domain.UrlInfo">
+        SELECT id
+            , origin_url
+            , short_url
+            , qr_code
+            , use_yn
+            , expired_dt
+            , custom_url_id
+            , create_by
+            , create_dt
+            , update_dt
+        FROM url_info
+        WHERE use_yn = #{useYn}
+        <if test="createBy != null and !createBy.isEmpty()">
+            AND create_by = #{createBy}
+        </if>
+    </select>
+
+</mapper>

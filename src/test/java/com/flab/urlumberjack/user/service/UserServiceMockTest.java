@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.flab.urlumberjack.user.domain.User;
 import com.flab.urlumberjack.user.dto.request.JoinRequest;
@@ -20,7 +19,7 @@ import com.flab.urlumberjack.user.exception.NotExistedUserException;
 import com.flab.urlumberjack.user.mapper.UserMapper;
 
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest
+@DisplayName("UserService Mock 테스트")
 class UserServiceMockTest {
 	@Mock
 	UserMapper mapper;
@@ -29,6 +28,7 @@ class UserServiceMockTest {
 	UserService mockService;
 
 	@Test
+	@DisplayName("가입시 입력한 email이 이미 등록되었다면 DuplicatedEmailException이 발생한다.")
 	void when_emailIsDuplicated_expect_throwsDuplicatedEmailException() {
 		// 가상의 User 객체 생성
 		User user = User.of("test@naver.com", "1q2w3e4r!", "01011112222");
