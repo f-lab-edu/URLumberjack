@@ -1,6 +1,5 @@
 package com.flab.urlumberjack.user.controller;
 
-import com.flab.urlumberjack.user.dto.request.ReIssueRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.flab.urlumberjack.user.dto.request.JoinRequest;
 import com.flab.urlumberjack.user.dto.request.LoginRequest;
+import com.flab.urlumberjack.user.dto.request.ReIssueRequest;
 import com.flab.urlumberjack.user.dto.response.JoinResponse;
 import com.flab.urlumberjack.user.dto.response.LoginResponse;
 import com.flab.urlumberjack.user.service.UserService;
@@ -26,7 +26,7 @@ public class UserController {
 		this.service = service;
 	}
 
-	@PostMapping
+	@PostMapping("/join")
 	public ResponseEntity<JoinResponse> join(@RequestBody @Valid JoinRequest dto) {
 		return ResponseEntity.ok(service.join(dto));
 	}
