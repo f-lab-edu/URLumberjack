@@ -98,7 +98,7 @@ tasks.register('copyPrivate') {
     copy {
         from './URLumberjack-private'
         include "*.yml"
-        into 'src/main/resources'
+        into './src/main/resources'
     }
 
 }
