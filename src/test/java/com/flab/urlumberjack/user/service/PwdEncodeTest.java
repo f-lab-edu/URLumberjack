@@ -4,9 +4,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@SpringBootTest
+@SpringBootTest(classes = {PwdEncodeTest.Config.class})
 @DisplayName("비밀번호 암호화 테스트")
 public class PwdEncodeTest {
 	@Autowired
@@ -22,6 +25,14 @@ public class PwdEncodeTest {
 			System.out.println("true");
 		} else {
 			System.out.println("false");
+		}
+	}
+
+	@Configuration
+	static class Config {
+		@Bean
+		public PasswordEncoder passwordEncoder() {
+			return new BCryptPasswordEncoder();
 		}
 	}
 }

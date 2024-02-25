@@ -57,7 +57,7 @@ compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 checkstyle {
     toolVersion = '10.3.3'
-    //maxWarnings = 0
+    //maxWarnings = 0 // 경고가 있으면 빌드 실패
     configFile = file("config/checkstyle/naver-checkstyle-rules.xml")
     configProperties = ["suppressionFile": "{config/checkstyle/naver-checkstyle-suppressions.xml"]
 }

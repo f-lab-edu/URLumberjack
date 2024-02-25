@@ -66,7 +66,7 @@ class UserControllerTest {
 				.mdn(VALID_MDN)
 				.build();
 
-			ResultActions response = mockMvc.perform(post("/api/v1/user/join")
+			ResultActions response = mockMvc.perform(post("/api/v1/user")
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(objectMapper.writeValueAsBytes(joinRequest))
 				)
@@ -87,7 +87,7 @@ class UserControllerTest {
 				.mdn(VALID_MDN)
 				.build();
 
-			ResultActions response = mockMvc.perform(post("/api/v1/user/join")
+			ResultActions response = mockMvc.perform(post("/api/v1/user")
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(objectMapper.writeValueAsBytes(joinRequest))
 				)
@@ -109,7 +109,7 @@ class UserControllerTest {
 				.mdn(VALID_MDN)
 				.build();
 
-			ResultActions response = mockMvc.perform(post("/api/v1/user/join")
+			ResultActions response = mockMvc.perform(post("/api/v1/user")
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(objectMapper.writeValueAsBytes(joinRequest))
 				)
@@ -130,7 +130,7 @@ class UserControllerTest {
 				.mdn(mdn)
 				.build();
 
-			ResultActions response = mockMvc.perform(post("/api/v1/user/join")
+			ResultActions response = mockMvc.perform(post("/api/v1/user")
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(objectMapper.writeValueAsBytes(joinRequest))
 				)

@@ -52,7 +52,7 @@ public class SecurityConfig {
 				authorizeHttpRequests
 					//비회원으로 접근가능한 컨텐츠(회원가입, 로그인, 메인페이지 접근 및 단순 URL 단축/조회)
 					.requestMatchers(
-						"/api/v1/user/join/**",
+						"/api/v1/user",
 						"/api/v1/user/login/**",
 						"/api/v1/main/**",
 						"/api/v1/lumberjack",
@@ -61,8 +61,6 @@ public class SecurityConfig {
 			.addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
-
-
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
