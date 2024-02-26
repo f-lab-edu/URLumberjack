@@ -36,6 +36,11 @@ jobs:
     - name: Check submodule files  
       run: |
         ls -l URLumberjack-private
+
+    #gradle build을 통한 submodule 파일 복사가 이루어지지 않는것으로 보여 직접 옮기도록 구문 수정
+    - name: Copy application.yml
+      run: |
+        cp URLumberjack-private/application.yml src/main/resources/
         
     #명시한 환경으로 setup
     - name: Set up JDK 17
