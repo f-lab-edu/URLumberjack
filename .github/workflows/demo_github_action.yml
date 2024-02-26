@@ -42,18 +42,13 @@ jobs:
     # - name: gradle build
     #   run: ./gradlew clean build
 
-    #yml 확인
-    - name: Check copied files 1
-      run: |
-        ls -l src/main/resources/*.yml
-        
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v3.1.0 # 버전 선택
       with:
         arguments: build
 
     #yml 확인
-    - name: Check copied files 2
+    - name: Check copied files 
       run: |
         ls -l src/main/resources/*.yml
         
