@@ -18,7 +18,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    env:
+      CI: true  # CI 환경을 활성화하여 더 많은 로그 출력
     steps:
     #소스코드(repo)를runner로 옮김. 서브모듈을 사용하므로 서브모듈 옵션도 추가
     - name: checkout
@@ -42,7 +43,7 @@ jobs:
     #   run: ./gradlew clean build
       
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@v2.4.2 # 버전 선택
+      uses: gradle/gradle-build-action@v3.1.0 # 버전 선택
       with:
         arguments: build
         
