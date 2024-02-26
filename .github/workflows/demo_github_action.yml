@@ -29,9 +29,9 @@ jobs:
         token: ${{ secrets.ACTION_TOKEN }}
 
     #yml 확인 1
-    - name: Check copied files  1
+    - name: Check files
       run: |
-        ls -l *.yml
+        ls -l
         
     #명시한 환경으로 setup
     - name: Set up JDK 17
