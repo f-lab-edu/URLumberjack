@@ -41,11 +41,22 @@ jobs:
         
     # - name: gradle build
     #   run: ./gradlew clean build
-      
+
+    #yml 확인
+    - name: Check copied files 1
+      run: |
+        ls -l src/main/resources/*.yml
+        
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v3.1.0 # 버전 선택
       with:
         arguments: build
+
+    #yml 확인
+    - name: Check copied files 2
+      run: |
+        ls -l src/main/resources/*.yml
+        
         
     #빌드한 jar파일을 도커 이미지로 빌드하고 도커 허브에 푸시
     - name: web docker build and push
