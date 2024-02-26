@@ -54,9 +54,13 @@ jobs:
         arguments: build
 
     #yml 확인 1
-    - name: Check copied files 
+    - name: Check files  
       run: |
-        ls -l src/main/resources/*.yml
+        ls -l 
+        
+    - name: Check submodule files  
+      run: |
+        ls -l URLumberjack-private
         
         
     #빌드한 jar파일을 도커 이미지로 빌드하고 도커 허브에 푸시
