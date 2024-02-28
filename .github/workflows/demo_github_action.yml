@@ -21,26 +21,13 @@ jobs:
     env:
       CI: true  # CI 환경을 활성화하여 더 많은 로그 출력
     steps:
+    
     #소스코드(repo)를runner로 옮김. 서브모듈을 사용하므로 서브모듈 옵션도 추가
     - name: checkout
       uses: actions/checkout@v4.1.1
       with:
         submodules: true
         token: ${{ secrets.ACTION_TOKEN }}
-
-    #yml 확인 1
-    - name: Check files
-      run: |
-        ls -l
-        
-    - name: Check submodule files  
-      run: |
-        ls -l URLumberjack-private
-
-    #gradle build을 통한 submodule 파일 복사가 이루어지지 않는것으로 보여 직접 옮기도록 구문 수정
-    - name: Copy application.yml
-      run: |
-        cp URLumberjack-private/application.yml src/main/resources/
         
     #명시한 환경으로 setup
     - name: Set up JDK 17
@@ -48,7 +35,8 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-    # gradle setup & build
+        
+    # gradle setup & build * 이전에 사용한 gradlew build task
     # - name: grant execute permission for gradlew
     #   run: |
     #     gradle wrapper
@@ -61,11 +49,6 @@ jobs:
       uses: gradle/gradle-build-action@v3.1.0 # 버전 선택
       with:
         arguments: build
-
-    #yml 확인 1
-    - name: Check files  
-      run: |
-        ls -l src/main/resources/*.yml
         
     #빌드한 jar파일을 도커 이미지로 빌드하고 도커 허브에 푸시
     - name: web docker build and push
