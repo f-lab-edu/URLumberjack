@@ -48,10 +48,6 @@ dependencies {
     implementation 'com.github.ben-manes.caffeine:caffeine:3.0.0'
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
-
 //[S : checkstyle]
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
@@ -69,6 +65,18 @@ tasks.withType(Checkstyle).configureEach {
 }
 //[E : checkstyle]
 
+//[S : application.yml copy from submodules to resources]
+tasks.register('copyPrivate', Copy) {
+    from './URLumberjack-private'
+    include "*.yml"
+    into './src/main/resources'
+}
+//[E : application.yml copy from submodules to resources]
+
+processResources {
+    dependsOn copyPrivate
+}
+
 //[S : restdocs]
 asciidoctor.doFirst {
     delete file('src/main/resources/static/docs')
@@ -79,6 +87,7 @@ ext {
 test {
     useJUnitPlatform()
     outputs.dir snippetsDir
+    dependsOn copyPrivate
 }
 asciidoctor {
     inputs.dir snippetsDir
@@ -92,13 +101,3 @@ bootJar {
     }
 }
 //[E : restdocs]
-
-//github submodule에서 yml 추출
-tasks.register('copyPrivate') {
-    copy {
-        from './URLumberjack-private'
-        include "*.yml"
-        into './src/main/resources'
-    }
-
-}
